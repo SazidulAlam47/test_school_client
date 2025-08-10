@@ -6,11 +6,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import UFrom from '../../components/form/UFrom';
 import Logo from '../../components/shared/Logo';
 import UInput from '@/components/form/UInput';
-import { useLoginMutation } from '@/redux/features/auth/auth.api';
 import { toast } from 'sonner';
 import { setToLocalStorage } from '@/utils/localStorage';
 import { authKey } from '@/constants/auth.constant';
 import { loginSchema } from '../../schemas/auth.schema';
+import { useLoginMutation } from '@/redux/features/auth.api';
 
 const Login = () => {
     const navigate = useNavigate();

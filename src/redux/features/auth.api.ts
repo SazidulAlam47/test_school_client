@@ -1,5 +1,5 @@
 import type { ILogin } from '@/types';
-import { baseApi } from '../../api/baseApi';
+import { baseApi } from '../api/baseApi';
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (build) => ({

@@ -53,8 +53,9 @@ const Header = () => {
                     <div className="flex items-center space-x-3">
                         {decodedUser ? (
                             <>
-                                {' '}
-                                <Button size="sm">Dashboard</Button>
+                                <Link to="/dashboard">
+                                    <Button size="sm">Dashboard</Button>
+                                </Link>
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -66,7 +67,6 @@ const Header = () => {
                             </>
                         ) : (
                             <>
-                                {' '}
                                 <Button
                                     variant="outline"
                                     size="sm"
