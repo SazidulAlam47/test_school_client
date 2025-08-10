@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { globalIgnores } from 'eslint/config'
 
+
 export default tseslint.config([
   globalIgnores(['dist']),
   {
@@ -19,5 +20,20 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      'no-unused-vars': 'error',
+      'prefer-const': ['error', { ignoreReadBeforeAssign: true }],
+      'no-unused-expressions': 'error',
+      'no-console': 'warn',
+      'no-undef': 'error',
+      quotes: ['warn', 'single'],
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    },
   },
+
 ])

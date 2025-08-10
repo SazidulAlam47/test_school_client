@@ -1,60 +1,45 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import UFrom from '../../components/form/UFrom';
 import Logo from '../../components/shared/Logo';
 import UInput from '@/components/form/UInput';
-
-// import { loginSchema } from '../../schemas/auth.schema'; // TODO: Uncomment when schema is ready
-// import { TLogin, TResponse } from '../../types'; // TODO: Uncomment when types are ready
+import { useLoginMutation } from '@/redux/features/auth/auth.api';
+import { toast } from 'sonner';
+import { setToLocalStorage } from '@/utils/localStorage';
+import { authKey } from '@/constants/auth.constant';
+import { loginSchema } from '../../schemas/auth.schema';
 
 const Login = () => {
-    // TODO: Add actual navigation when routing is set up
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    // TODO: Add Redux dispatch when store is ready
-    // const dispatch = useAppDispatch();
-
-    // TODO: Add actual login mutation when API is ready
-    // const [login] = useLoginMutation();
+    const [login] = useLoginMutation();
 
     const onSubmit = async (data: FieldValues) => {
         console.log(data);
 
-        // const toastId = toast.loading('Logging in...');
-        // // TODO: Replace with actual API call when backend is ready
-        // try {
-        //     console.log('Login data:', data);
-        //     // Simulate API call
-        //     await new Promise(resolve => setTimeout(resolve, 1000));
-        //     // TODO: Replace with actual API response handling
-        //     const mockResponse: TResponse<TLogin> = {
-        //         data: {
-        //             data: {
-        //                 accessToken: 'mock-token',
-        //                 needsPasswordChange: false
-        //             },
-        //             message: 'Login successful!'
-        //         }
-        //     };
-        //     if (mockResponse.data) {
-        //         // TODO: Add actual token verification and user dispatch
-        //         // const token = mockResponse.data.data.accessToken;
-        //         // const user = verifyToken(token) as IUser;
-        //         // dispatch(setUser({ user, token }));
-        //         if (mockResponse.data.data.needsPasswordChange) {
-        //             // TODO: navigate('/change-password');
-        //             console.log('Should navigate to change password');
-        //         } else {
-        //             // TODO: navigate('/');
-        //             console.log('Should navigate to home');
-        //         }
-        //         toast.success(mockResponse.data.message, { id: toastId });
-        //     }
-        // } catch {
-        //     toast.error('Login failed. Please try again.', { id: toastId });
-        // }
+        const toastId = toast.loading('Logging in...');
+
+        try {
+            const res = await login(data).unwrap();
+
+            const token = res.accessToken;
+            if (token) {
+                setToLocalStorage(authKey, token);
+                if (res.needPasswordChange) {
+                    navigate('/change-password');
+                } else {
+                    navigate('/');
+                }
+                toast.success('Login successful!', { id: toastId });
+            }
+        } catch (error: any) {
+            toast.error(error.message || error.data || 'Something went wrong', {
+                id: toastId,
+            });
+        }
     };
 
     return (
@@ -74,9 +59,7 @@ const Login = () => {
                 <CardContent className="space-y-6">
                     <UFrom
                         onSubmit={onSubmit}
-
-                        // TODO: Add resolver when Zod schema is ready
-                        // resolver={zodResolver(loginSchema)}
+                        resolver={zodResolver(loginSchema)}
                     >
                         <div className="space-y-4">
                             <UInput

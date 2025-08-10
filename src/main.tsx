@@ -4,10 +4,14 @@ import './index.css';
 import { RouterProvider } from 'react-router';
 import router from './routes/routes';
 import { Toaster } from 'sonner';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <RouterProvider router={router} />
-        <Toaster />
-    </StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router} />
+            <Toaster position="top-center" />
+        </Provider>
+    </StrictMode>,
 );
