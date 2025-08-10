@@ -34,28 +34,22 @@ export const loginSchema = z.object({
         .min(1, 'Please enter your Password'),
 });
 
-export const registerPatientSchema = z.object({
+export const registerSchema = z.object({
+    name: z
+        .string({ message: 'Please enter your Name' })
+        .min(1, 'Please enter your Name'),
+    email: z
+        .string({ message: 'Please enter your Email' })
+        .min(1, 'Please enter your Email')
+        .email('Invalid Email'),
     password: newPasswordSchema,
-    patient: z.object({
-        name: z
-            .string({ message: 'Please enter your Name' })
-            .min(1, 'Please enter your Name'),
-        email: z
-            .string({ message: 'Please enter your Email' })
-            .min(1, 'Please enter your Email')
-            .email('Invalid Email'),
-        contactNumber: z
-            .string({ message: 'Please enter your Contact Number' })
-            .min(1, 'Please enter your Contact Number')
-            .regex(/^01\d{9}$/, {
-                message: 'Number must be 11 digits and start with 01',
-            }),
-        address: z
-            .string()
-            .optional()
-            .transform((val) => (val === '' ? undefined : val)),
-    }),
-    image: z.any(),
+});
+
+export const verifyOtpSchema = z.object({
+    otp: z
+        .string({ message: 'Please enter the OTP' })
+        .min(6, 'OTP must be 6 digits')
+        .max(6, 'OTP must be 6 digits'),
 });
 
 export const changePasswordSchema = z.object({

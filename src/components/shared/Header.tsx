@@ -67,13 +67,15 @@ const Header = () => {
                             </>
                         ) : (
                             <>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="hidden sm:inline-flex"
-                                >
-                                    Sign Up
-                                </Button>
+                                <Link to="/register">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="hidden sm:inline-flex"
+                                    >
+                                        Sign Up
+                                    </Button>
+                                </Link>
                                 <Link to="/login">
                                     <Button size="sm">Login</Button>
                                 </Link>

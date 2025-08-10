@@ -1,6 +1,7 @@
 import type { TLevel, TStep, TUserRole } from './common.type';
 
 export interface IUser {
+    _id: string;
     name: string;
     email: string;
     password: string;

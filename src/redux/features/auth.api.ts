@@ -1,4 +1,4 @@
-import type { ILogin } from '@/types';
+import type { ILogin, IUser } from '@/types';
 import { baseApi } from '../api/baseApi';
 
 const authApi = baseApi.injectEndpoints({
@@ -10,6 +10,21 @@ const authApi = baseApi.injectEndpoints({
                 data,
             }),
             invalidatesTags: ['me'],
+        }),
+        register: build.mutation<IUser, any>({
+            query: (data) => ({
+                url: '/auth/register',
+                method: 'POST',
+                data,
+            }),
+            invalidatesTags: ['me'],
+        }),
+        verifyOtp: build.mutation({
+            query: (args) => ({
+                url: `/auth/verify-email/${args.id}`,
+                method: 'POST',
+                data: args.data,
+            }),
         }),
         changePassword: build.mutation({
             query: (data) => ({
@@ -43,4 +58,6 @@ export const {
     useChangePasswordMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
+    useRegisterMutation,
+    useVerifyOtpMutation,
 } = authApi;

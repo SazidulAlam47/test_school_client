@@ -9,6 +9,8 @@ import Quiz from '@/pages/dashboard/student/Quiz';
 import { createBrowserRouter } from 'react-router';
 import ProtectedRoute from './ProtectedRoute';
 import CreateQuiz from '@/pages/dashboard/admin/CreateQuiz';
+import Register from '@/pages/auth/Register';
+import VerifyOtp from '@/pages/auth/VerifyOtp';
 
 const router = createBrowserRouter([
     {
@@ -80,6 +82,14 @@ const router = createBrowserRouter([
     {
         path: '/login',
         element: <Login />,
+    },
+    {
+        path: '/register',
+        element: <Register />,
+    },
+    {
+        path: '/verify-otp',
+        element: <VerifyOtp />,
     },
 ]);
 
