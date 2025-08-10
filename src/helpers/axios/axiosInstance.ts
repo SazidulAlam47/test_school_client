@@ -2,7 +2,7 @@ import axios from 'axios';
 import { authKey } from '@/constants/auth.constant';
 import { getFromLocalStorage, setToLocalStorage } from '@/utils/localStorage';
 import type { TResponseErrorType, TResponseSuccessType } from '@/types';
-import userLogout from '@/utils/logoutUser';
+import userLogout from '@/utils/userLogout';
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/json';

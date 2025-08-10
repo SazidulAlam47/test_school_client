@@ -1,8 +1,21 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router';
+import { useState } from 'react';
 import Logo from './Logo';
+import getUser from '@/utils/getUser';
+import userLogout from '@/utils/userLogout';
+import { toast } from 'sonner';
 
 const Header = () => {
+    const [, forceUpdate] = useState({});
+    const decodedUser = getUser();
+
+    const handleLogout = async () => {
+        await userLogout();
+        toast.success('Logged out successfully');
+        forceUpdate({}); // Force re-render
+    };
+
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto px-4 py-3">
@@ -37,18 +50,35 @@ const Header = () => {
                         </a>
                     </nav>
 
-                    {/* CTA Buttons */}
                     <div className="flex items-center space-x-3">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="hidden sm:inline-flex"
-                        >
-                            Sign Up
-                        </Button>
-                        <Link to="/login">
-                            <Button size="sm">Login</Button>
-                        </Link>
+                        {decodedUser ? (
+                            <>
+                                {' '}
+                                <Button size="sm">Dashboard</Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="hidden sm:inline-flex"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                {' '}
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="hidden sm:inline-flex"
+                                >
+                                    Sign Up
+                                </Button>
+                                <Link to="/login">
+                                    <Button size="sm">Login</Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
