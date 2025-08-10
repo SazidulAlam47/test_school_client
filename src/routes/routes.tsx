@@ -11,6 +11,8 @@ import ProtectedRoute from './ProtectedRoute';
 import CreateQuiz from '@/pages/dashboard/admin/CreateQuiz';
 import Register from '@/pages/auth/Register';
 import VerifyOtp from '@/pages/auth/VerifyOtp';
+import ForgotPassword from '@/pages/auth/ForgotPassword';
+import ResetPassword from '@/pages/auth/ResetPassword';
 
 const router = createBrowserRouter([
     {
@@ -90,6 +92,14 @@ const router = createBrowserRouter([
     {
         path: '/verify-otp',
         element: <VerifyOtp />,
+    },
+    {
+        path: '/forgot-password',
+        element: <ForgotPassword />,
+    },
+    {
+        path: '/reset-password',
+        element: <ResetPassword />,
     },
 ]);
 
