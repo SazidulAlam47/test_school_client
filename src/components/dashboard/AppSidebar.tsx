@@ -1,4 +1,4 @@
-import { Home, Award, FileText, History } from 'lucide-react';
+import { Home, Award, FileText, History, BadgePlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -10,13 +10,15 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarHeader,
 } from '@/components/ui/sidebar';
 import getUser from '@/utils/getUser';
+import Logo from '@/components/shared/Logo';
 
 const studentItems = [
     {
         title: 'Home',
-        url: '/dashboard/student',
+        url: '/dashboard',
         icon: Home,
     },
     {
@@ -36,13 +38,29 @@ const studentItems = [
     },
 ];
 
+const adminItems = [
+    {
+        title: 'Home',
+        url: '/dashboard',
+        icon: Home,
+    },
+    {
+        title: 'Create Quiz',
+        url: '/dashboard/admin/create-quiz',
+        icon: BadgePlus,
+    },
+];
+
 const AppSidebar = () => {
     const decodedUser = getUser();
 
-    const items = decodedUser?.role === 'student' ? studentItems : [];
+    const items = decodedUser?.role === 'student' ? studentItems : adminItems;
 
     return (
         <Sidebar>
+            <SidebarHeader className="p-4 border-b">
+                <Logo size="sm" />
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>

@@ -36,7 +36,6 @@ const Quiz = () => {
         });
     const [submitAnswers] = useSubmitAnswersMutation();
 
-    // Timer countdown effect
     useEffect(() => {
         if (isStarted && timeLeft > 0) {
             const timer = setInterval(() => {
@@ -46,9 +45,45 @@ const Quiz = () => {
             return () => clearInterval(timer);
         } else if (timeLeft === 0) {
             toast.error('Time is up! Quiz will be auto-submitted.');
-            // Auto-submit logic can be added here
+            handleAutoSubmit();
         }
     }, [isStarted, timeLeft]);
+
+    const handleAutoSubmit = async () => {
+        const formElement = document.querySelector('form');
+        if (formElement) {
+            const formData = new FormData(formElement);
+            const data: FieldValues = {};
+
+            questions?.forEach((_, index: number) => {
+                const fieldName = `question_${index}`;
+                const value = formData.get(fieldName);
+                if (value) {
+                    data[fieldName] = value.toString();
+                }
+            });
+
+            const payload = {
+                answers:
+                    questions?.map((question: IQuestion, index: number) => ({
+                        questionId: question._id,
+                        selectedOption: data[`question_${index}`]
+                            ? parseInt(data[`question_${index}`])
+                            : undefined,
+                    })) || [],
+            };
+
+            try {
+                await submitAnswers({ id: quizId, data: payload }).unwrap();
+                toast.success('Quiz auto-submitted successfully!');
+                navigate('/dashboard/student/my-tests');
+            } catch (error: any) {
+                toast.error(
+                    error.message || error.data || 'Failed to auto-submit quiz',
+                );
+            }
+        }
+    };
 
     const handleStartTest = async () => {
         try {
@@ -81,7 +116,7 @@ const Quiz = () => {
             toast.success('Quiz submitted successfully!', {
                 id: toastId,
             });
-            navigate('/dashboard/student/my-tests'); // Redirect to dashboard after submission
+            navigate('/dashboard/student/my-tests');
         } catch (error: any) {
             toast.error(error.message || error.data || 'Something went wrong', {
                 id: toastId,
@@ -89,11 +124,9 @@ const Quiz = () => {
         }
     };
 
-    // If quiz is started, show questions
     if (isStarted) {
         return (
             <div className="w-full min-h-screen px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-                {/* Timer Header */}
                 <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b mb-4 sm:mb-6 pb-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
@@ -125,7 +158,6 @@ const Quiz = () => {
                     </div>
                 </div>
 
-                {/* Questions Section */}
                 {isQuestionsLoading ? (
                     <div className="text-center py-8">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
@@ -162,7 +194,6 @@ const Quiz = () => {
                                     ),
                                 )}
 
-                                {/* Submit Button */}
                                 <div className="flex justify-center pt-6 sm:pt-8">
                                     <Button
                                         type="submit"
@@ -197,7 +228,6 @@ const Quiz = () => {
         );
     }
 
-    // Initial quiz start page
     return (
         <div className="w-full min-h-screen px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
             {/* Header */}
@@ -210,9 +240,7 @@ const Quiz = () => {
                 </p>
             </div>
 
-            {/* Quiz Cards */}
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                {/* Available Quiz Card */}
                 <Card className="border-2 hover:border-primary/50 transition-colors">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
@@ -263,7 +291,6 @@ const Quiz = () => {
                     </CardContent>
                 </Card>
 
-                {/* Instructions Card */}
                 <Card className="h-fit">
                     <CardHeader>
                         <CardTitle className="text-primary">
@@ -282,8 +309,8 @@ const Quiz = () => {
                             <div className="flex items-start gap-3">
                                 <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                                 <p>
-                                    Questions may include multiple choice,
-                                    true/false, and short answer formats
+                                    Questions will only include multiple choice
+                                    formats.
                                 </p>
                             </div>
                             <div className="flex items-start gap-3">

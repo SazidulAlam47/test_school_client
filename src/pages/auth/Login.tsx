@@ -31,7 +31,7 @@ const Login = () => {
                 if (res.needPasswordChange) {
                     navigate('/change-password');
                 } else {
-                    navigate('/');
+                    navigate('/dashboard');
                 }
                 toast.success('Login successful!', { id: toastId });
             }

@@ -2,11 +2,13 @@ import DashboardLayout from '@/layouts/DashboardLayout';
 import MainLayout from '@/layouts/MainLayout';
 import Home from '@/pages/Home/Home';
 import Login from '@/pages/auth/Login';
+import Dashboard from '@/pages/dashboard/Dashboard';
 import Certificate from '@/pages/dashboard/student/Certificate';
 import MyTests from '@/pages/dashboard/student/MyTests';
 import Quiz from '@/pages/dashboard/student/Quiz';
-import StudentDashboard from '@/pages/dashboard/student/StudentDashboard';
 import { createBrowserRouter } from 'react-router';
+import ProtectedRoute from './ProtectedRoute';
+import CreateQuiz from '@/pages/dashboard/admin/CreateQuiz';
 
 const router = createBrowserRouter([
     {
@@ -20,24 +22,58 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: '/dashboard/student',
+        path: '/dashboard',
         element: <DashboardLayout />,
         children: [
             {
                 index: true,
-                element: <StudentDashboard />,
+                element: (
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                ),
             },
             {
-                path: 'quiz',
-                element: <Quiz />,
+                path: 'student',
+                children: [
+                    {
+                        path: 'quiz',
+                        element: (
+                            <ProtectedRoute role="student">
+                                <Quiz />
+                            </ProtectedRoute>
+                        ),
+                    },
+                    {
+                        path: 'certificate',
+                        element: (
+                            <ProtectedRoute role="student">
+                                <Certificate />
+                            </ProtectedRoute>
+                        ),
+                    },
+                    {
+                        path: 'my-tests',
+                        element: (
+                            <ProtectedRoute role="student">
+                                <MyTests />
+                            </ProtectedRoute>
+                        ),
+                    },
+                ],
             },
             {
-                path: 'certificate',
-                element: <Certificate />,
-            },
-            {
-                path: 'my-tests',
-                element: <MyTests />,
+                path: 'admin',
+                children: [
+                    {
+                        path: 'create-quiz',
+                        element: (
+                            <ProtectedRoute role="admin">
+                                <CreateQuiz />
+                            </ProtectedRoute>
+                        ),
+                    },
+                ],
             },
         ],
     },

@@ -5,7 +5,7 @@ const testAttemptApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getMyAttempts: build.query<ITestAttempt[], any>({
             query: () => ({
-                url: '/my-attempts',
+                url: '/test-attempts/my-attempts',
                 method: 'GET',
             }),
             providesTags: ['test-attempt'],
@@ -31,10 +31,13 @@ const testAttemptApi = baseApi.injectEndpoints({
                 method: 'POST',
                 data: args.data,
             }),
-            invalidatesTags: ['test-attempt'],
+            invalidatesTags: ['test-attempt', 'me'],
         }),
     }),
 });
 
-export const { useStartTestMutation, useSubmitAnswersMutation } =
-    testAttemptApi;
+export const {
+    useStartTestMutation,
+    useSubmitAnswersMutation,
+    useGetMyAttemptsQuery,
+} = testAttemptApi;

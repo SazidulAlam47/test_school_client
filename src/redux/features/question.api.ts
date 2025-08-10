@@ -17,8 +17,19 @@ const questionApi = baseApi.injectEndpoints({
             }),
             providesTags: ['question'],
         }),
+        createQuestion: build.mutation<IQuestion, any>({
+            query: (data) => ({
+                url: `/questions`,
+                method: 'POST',
+                data,
+            }),
+            invalidatesTags: ['question'],
+        }),
     }),
 });
 
-export const { useGetAllQuestionsQuery, useGetQuestionsByStepQuery } =
-    questionApi;
+export const {
+    useGetAllQuestionsQuery,
+    useGetQuestionsByStepQuery,
+    useCreateQuestionMutation,
+} = questionApi;
