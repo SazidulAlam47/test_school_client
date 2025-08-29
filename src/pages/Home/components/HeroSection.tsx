@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router';
 
 const HeroSection = () => {
     return (
@@ -27,9 +28,11 @@ const HeroSection = () => {
 
                     {/* CTA Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                        <Button size="lg" className="text-base px-8">
-                            Start Quiz Test
-                        </Button>
+                        <Link to="/dashboard/student/quiz">
+                            <Button size="lg" className="text-base px-8">
+                                Start Quiz Test
+                            </Button>
+                        </Link>
                         <Button
                             variant="outline"
                             size="lg"
